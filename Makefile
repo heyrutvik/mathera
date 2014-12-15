@@ -14,7 +14,7 @@ db.o: db.c
 	$(CC) $(CFLAGS) $(MYSQL) db.c
 
 utilities.o: utilities.c
-	$(CC) $(CFLAGS) utilities.c
+	$(CC) $(CFLAGS) $(MYSQL) utilities.c
 
 clean:
 	rm -rf *o mathera

@@ -34,3 +34,5 @@ inline void set_mysql_error_no(void);
 
 /* halt program with developer message and mysql error message */
 inline void mysql_fatal_error(const char *dev_msg);
+
+void get_by_year(int year);

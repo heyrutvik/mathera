@@ -1,4 +1,5 @@
 #include "db.h"
+#include "utilities.h"
 #include <mysqld_error.h>
 #include <errmsg.h>
 
@@ -104,4 +105,38 @@ inline void mysql_fatal_error(const char *dev_msg)
     fprintf(stderr, "%s: (%u)%s\n", dev_msg, mysql_errno(con), mysql_error(con));
     mysql_close(con);
     exit(1);
+}
+
+void get_by_year(int year)
+{
+    char query[MAXSIZE + 1];
+    //int num_fields, i;
+
+    snprintf(query, MAXSIZE + 1, 
+            "select a.id, b.year, c.name,a.topic, a.description\
+            from contribution as a\
+            left join year as b on (a.year_id = b.id)\
+            left join name as c on (a.name_id = c.id)\
+            where b.year = %d", year);
+
+    mysql_query(con, query);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    //num_fields = mysql_num_fields(result);
+
+    MYSQL_ROW row;
+
+    putchar('\n');
+    while ((row = mysql_fetch_row(result))) { 
+        /* id | year | name */
+        printf("%s | %s | %s\n", row[0], row[1], row[2]);
+        /* topic */
+        printf("%s\n", row[3]);
+        /* description */
+        printf("%s\n", row[4]);
+        printf("\n");
+    }
+
+    mysql_free_result(result);
 }
