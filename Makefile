@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-c -Wall -Werror
+CFLAGS=-c -Wall -Werror `mysql_config --cflags --libs`
 
 all: mathera
 
