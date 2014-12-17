@@ -135,6 +135,36 @@ void get_by_year(int year)
     mysql_free_result(result);
 }
 
+void set_year(int year)
+{
+    char query[MAXSIZE];
+
+    snprintf(query, MAXSIZE,
+            "insert into year (year) values (%d)", year);
+    //printf("%s\n", query);
+    mysql_query(con, query);
+}
+
+void set_name(char *name)
+{
+    char query[MAXSIZE];
+
+    snprintf(query, MAXSIZE,
+            "insert into name (name) values ('%s')", name);
+    mysql_query(con, query);
+}
+
+void set_topic(struct contribution_data input)
+{
+    char query[MAXSIZE];
+
+    snprintf(query, MAXSIZE,
+            "insert into contribution (year_id, name_id, topic, description)\
+             values (%d, %d, '%s', '%s')", 
+             input.year_id, input.name_id, input.topic, input.description);
+    mysql_query(con, query);
+}
+
 void get_by_name(char *name)
 {
     char query[MAXSIZE];
@@ -184,6 +214,58 @@ void get_by_topic(char *topic)
     putchar('\n');
     while ((row = mysql_fetch_row(result))) {
         print_row(row);
+    }
+
+    mysql_free_result(result);
+}
+
+void list_year(void)
+{
+    char *query = "select id, year from year";
+
+    mysql_query(con, query);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    MYSQL_ROW row;
+
+    putchar('\n');
+
+    /* print in three columns */
+    int counter = 0;
+    while ((row = mysql_fetch_row(result))) {
+        counter++;
+        printf("%s | %s\t", row[0], row[1]);
+        if (counter == 3) {
+            putchar('\n');
+            counter = 0;
+        }
+    }
+
+    mysql_free_result(result);
+}
+
+void list_name(void)
+{
+    char *query = "select id, name from name";
+
+    mysql_query(con, query);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    MYSQL_ROW row;
+
+    putchar('\n');
+
+    /* print in three columns */
+    int counter = 0;
+    while ((row = mysql_fetch_row(result))) {
+        counter++;
+        printf("%s | %s\t", row[0], row[1]);
+        if (counter == 3) {
+            putchar('\n');
+            counter = 0;
+        }
     }
 
     mysql_free_result(result);

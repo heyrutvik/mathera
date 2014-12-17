@@ -19,7 +19,7 @@ int main(void)
         switch (command_code) {
 
         case CMD_CREATE:
-            printf("create\n");
+            call_create(string);
             break;
 
         case CMD_READ:
