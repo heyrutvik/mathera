@@ -1,6 +1,6 @@
 #include <string.h>
 
-#define MAXSIZE 255
+#define MAXSIZE 4096
 #define PROMPT(x)   {\
                             printf("mathera > ");\
                             fgets(x, MAXSIZE, stdin);\
@@ -17,3 +17,6 @@ int get_command_code(const char *command);
 
 void call_read(const char *command);
 void call_help(void);
+
+/* temporary function to print row of `read` command */
+void print_row(MYSQL_ROW row);

@@ -109,10 +109,10 @@ inline void mysql_fatal_error(const char *dev_msg)
 
 void get_by_year(int year)
 {
-    char query[MAXSIZE + 1];
+    char query[MAXSIZE];
     //int num_fields, i;
 
-    snprintf(query, MAXSIZE + 1, 
+    snprintf(query, MAXSIZE, 
             "select a.id, b.year, c.name,a.topic, a.description\
             from contribution as a\
             left join year as b on (a.year_id = b.id)\
@@ -128,14 +128,62 @@ void get_by_year(int year)
     MYSQL_ROW row;
 
     putchar('\n');
-    while ((row = mysql_fetch_row(result))) { 
-        /* id | year | name */
-        printf("%s | %s | %s\n", row[0], row[1], row[2]);
-        /* topic */
-        printf("%s\n", row[3]);
-        /* description */
-        printf("%s\n", row[4]);
-        printf("\n");
+    while ((row = mysql_fetch_row(result))) {
+        print_row(row);
+    }
+
+    mysql_free_result(result);
+}
+
+void get_by_name(char *name)
+{
+    char query[MAXSIZE];
+
+    snprintf(query, MAXSIZE,
+            "select a.id, b.year, c.name,a.topic, a.description\
+            from contribution as a\
+            left join year as b on (a.year_id = b.id)\
+            left join name as c on (a.name_id = c.id)\
+            where c.name = '%s'", name);
+
+    //printf("%s => %d\n", query, (int)strlen(query));
+    
+    mysql_query(con, query);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    MYSQL_ROW row;
+
+    putchar('\n');
+    while ((row = mysql_fetch_row(result))) {
+        print_row(row);
+    }
+
+    mysql_free_result(result);
+}
+
+void get_by_topic(char *topic)
+{
+    char query[MAXSIZE];
+
+    snprintf(query, MAXSIZE,
+            "select a.id, b.year, c.name,a.topic, a.description\
+            from contribution as a\
+            left join year as b on (a.year_id = b.id)\
+            left join name as c on (a.name_id = c.id)\
+            where a.topic like '%%%s%%'", topic);
+
+    //printf("%s => %d\n", query, (int)strlen(query));
+    
+    mysql_query(con, query);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    MYSQL_ROW row;
+
+    putchar('\n');
+    while ((row = mysql_fetch_row(result))) {
+        print_row(row);
     }
 
     mysql_free_result(result);

@@ -36,3 +36,7 @@ inline void set_mysql_error_no(void);
 inline void mysql_fatal_error(const char *dev_msg);
 
 void get_by_year(int year);
+
+void get_by_name(char *name);
+
+void get_by_topic(char *topic);

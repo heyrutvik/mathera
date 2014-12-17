@@ -1,5 +1,5 @@
-#include "utilities.h"
 #include "db.h"
+#include "utilities.h"
 #include <stdio.h>
 
 int get_command_code(const char *string)
@@ -21,6 +21,17 @@ int get_command_code(const char *string)
         return CMD_HELP;
 }
 
+void print_row(MYSQL_ROW row)
+{
+    /* id | year | name */
+    printf("%s | %s | %s\n", row[0], row[1], row[2]);
+    /* topic */
+    printf("%s\n", row[3]);
+    /* description */
+    printf("%s\n", row[4]);
+    printf("\n");
+}
+
 void call_help(void)
 {
     printf("\nmathEra utility help\n");
@@ -39,9 +50,9 @@ void call_read(const char *string)
     if (!strcmp(sub_command, "year")) {
         get_by_year(atoi(query));
     } else if (!strcmp(sub_command, "name")) {
-        //get_by_name(query);
+        get_by_name(query);
     } else if (!strcmp(sub_command, "topic")) {
-        //get_by_topic(query);
+        get_by_topic(query);
     } else {
         call_help();
     }
